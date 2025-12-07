@@ -384,10 +384,83 @@
                         <div class="success-icon">
                             <i class="fas fa-check-circle"></i>
                         </div>
-                        <h2 class="confirmation-title">Reserva Confirmada!</h2>
-                        <p class="confirmation-text">
-                            Anote seu número. Entraremos em contato em caso de sorteio.
-                        </p>
+                        <div class="confirmation-container">
+    <h2 class="confirmation-title">✅ Reserva Confirmada!</h2>
+    <p class="confirmation-text">
+        Sua reserva foi confirmada. Para garantir sua participação, efetue o pagamento da sua cota via Pix na chave abaixo.
+    </p>
+
+    <div class="pix-details" style="text-align: center; margin: 20px 0;">
+        <p class="pix-label" style="font-size: 1.1em; font-weight: bold; color: #333;">🔑 CHAVE PIX (E-mail):</p>
+        <code id="pixKey" style="display: block; padding: 10px; background-color: #f0f8ff; border: 2px dashed #007bff; font-size: 1.2em; font-weight: bold; color: #0056b3; margin-bottom: 10px;">
+            enriqueesteves.py@gmail.com
+        </code>
+        <button onclick="copyPix()" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            Copiar Chave Pix
+        </button>
+        <p id="copyMessage" style="color: #28a745; margin-top: 5px; visibility: hidden; font-weight: bold;">Chave copiada!</p>
+    </div>
+
+    <p class="note-text">
+        **Importante:** Utilize o botão acima para copiar e realizar a transferência. Guarde o comprovante.
+    </p>
+
+    <script>
+        function copyPix() {
+            // Seleciona o texto da chave Pix
+            const pixKey = document.getElementById('pixKey').innerText.trim();
+            
+            // Tenta usar a API moderna navigator.clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pixKey).then(() => {
+                    showCopyMessage();
+                }).catch(err => {
+                    // Fallback em caso de falha (navegadores antigos ou restrições)
+                    fallbackCopyTextToClipboard(pixKey);
+                    showCopyMessage();
+                });
+            } else {
+                // Fallback mais robusto para navegadores antigos
+                fallbackCopyTextToClipboard(pixKey);
+                showCopyMessage();
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // Torna o textarea invisível para o usuário
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.opacity = "0";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.error('Falha ao tentar copiar o texto (fallback)', err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        function showCopyMessage() {
+            const message = document.getElementById('copyMessage');
+            message.style.visibility = 'visible';
+            
+            // Esconde a mensagem após 3 segundos
+            setTimeout(() => {
+                message.style.visibility = 'hidden';
+            }, 3000);
+        }
+    </script>
+</div>
+
                         
                         <div class="reservation-details">
                             <div class="detail-item">
